@@ -32,16 +32,19 @@ def test_complex_magnitude(sample_complex_numbers):
 def test_complex_phase(sample_complex_numbers):
     """Testa as três versões do cálculo de fase."""
     z = sample_complex_numbers
-    
-    # Compara as versões 1, 2 e 3 entre si
-    phase_v1 = complex_phase(z, version=1)
+
+    # A versão 1 (usando np.arctan) é instável e gera warnings com divisão por zero
+    # para números com parte real igual a zero.
+    # Por isso, vamos testá-la apenas com um valor onde ela funciona (1+1j).
+    phase_v1_case = complex_phase(z[0], version=1)
+    assert np.isclose(phase_v1_case, np.pi / 4)
+
+    # As versões 2 e 3 são mais robustas e devem funcionar para todos os casos.
     phase_v2 = complex_phase(z, version=2)
-    phase_v3 = complex_phase(z, version=3) # np.angle
-    
-    # np.arctan2 é a referência mais robusta, então comparamos com a v2 e v3
+    phase_v3 = complex_phase(z, version=3)  # np.angle
+
+    # np.arctan2 (v2) é a implementação de referência, então comparamos com a v3.
     assert np.allclose(phase_v2, phase_v3)
-    
-    # A versão 1 (arctan) falha em alguns quadrantes, então não comparamos com as outras.
-    # Mas podemos verificar um valor conhecido onde ela funciona (1+1j).
-    assert np.isclose(phase_v1[0], np.pi / 4)
+
+    # Verifica se a fase de 1+1j (primeiro elemento) é pi/4 também na versão 3.
     assert np.isclose(phase_v3[0], np.pi / 4)

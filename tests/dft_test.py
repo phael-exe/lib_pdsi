@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 # Importando as suas funções para serem testadas
+from core.dft.dft import dft
 from core.dft.versions.signal import signal_dft
 from core.dft.versions.basis import basis_dft
 from core.dft.versions.mtx import matrix_dft
@@ -69,3 +70,27 @@ def test_fft_raises_error_for_non_power_of_two():
     signal_not_power_of_2 = np.zeros(7) # 7 não é potência de 2
     with pytest.raises(ValueError):
         fast_dft(signal_not_power_of_2)
+
+
+@pytest.mark.parametrize("version", ["signal", "basis", "matrix", "fft", "numpy"])
+def test_main_dft(version, signal_impulse, signal_dc, signal_sinusoid):
+    """
+    Testa a função dft principal com todas as suas versões.
+    """
+    # Teste 1: Impulso
+    expected_impulse = np.fft.fft(signal_impulse)
+    actual_impulse = dft(signal_impulse, version=version)
+    assert np.allclose(actual_impulse, expected_impulse)
+
+    # Teste 2: Sinal DC
+    expected_dc = np.fft.fft(signal_dc)
+    actual_dc = dft(signal_dc, version=version)
+    assert np.allclose(actual_dc, expected_dc)
+
+    # Teste 3: Senoide
+    # A versão 4 (FFT) e 5 (padrão numpy) funcionam com qualquer tamanho,
+    # mas as outras implementações podem ter restrições.
+    # O sinal senoidal tem 8 amostras, que é potência de 2.
+    expected_sinusoid = np.fft.fft(signal_sinusoid)
+    actual_sinusoid = dft(signal_sinusoid, version=version)
+    assert np.allclose(actual_sinusoid, expected_sinusoid)

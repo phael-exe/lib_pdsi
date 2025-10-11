@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import numpy as np
 import pytest
 
-from core.complex.magnitude import complex_magnitude
-from core.complex.phase import complex_phase
+from src.lib_pdsi.complex.magnitude import complex_magnitude
+from src.lib_pdsi.complex.phase import complex_phase
 
 @pytest.fixture
 def sample_complex_numbers():

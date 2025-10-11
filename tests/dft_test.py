@@ -1,12 +1,16 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import numpy as np
 import pytest
 
 # Importando as suas funções para serem testadas
-from core.dft.dft import dft
-from core.dft.versions.signal import signal_dft
-from core.dft.versions.basis import basis_dft
-from core.dft.versions.mtx import matrix_dft
-from core.dft.versions.fft import fast_dft
+from src.lib_pdsi.dft.dft import dft
+from src.lib_pdsi.dft.versions.signal import signal_dft
+from src.lib_pdsi.dft.versions.basis import basis_dft
+from src.lib_pdsi.dft.versions.mtx import matrix_dft
+from src.lib_pdsi.dft.versions.fft import fast_dft
 
 # --- Sinais de Teste ---
 # Usamos o pytest.fixture para criar sinais que podem ser reutilizados em vários testes.

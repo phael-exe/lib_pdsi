@@ -17,7 +17,7 @@ def fast_dft(x):
     Xo = fast_dft(x[1::2])
     
     k = np.arange(N//2)
-    basis = np.exp(-2j * np.pi * k / N)
+    basis = np.exp(-1j * np.pi * k / N)
     
     term = basis * Xo
     first_half = Xe + term
